@@ -13,11 +13,11 @@ class Country{
 
     getCountryFlagUrl() {
 
-        return ` http://www.countryflags.io/${this.id}/flat/48.png`
+        return ` https://www.countryflags.io/${this.id}/flat/48.png`
      }
 
 
 
 }
-
+ 
 module.exports = Country ;
