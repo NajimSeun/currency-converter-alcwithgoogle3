@@ -1,0 +1,81 @@
+.nav-color {
+
+    background-color: #ffffff;
+}
+.theme-color{
+    color: #29CB9A;
+}
+.nav-shadow{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.card-margin{
+    margin-top :100px
+}
+ 
+.width-100{
+    width: 100% ;
+
+}
+
+.text-dark{
+    color : #000000 ;
+}
+.converter-card {
+    margin-top: 80px ; 
+    padding-top: 30px ;
+    padding-bottom: 20px
+}
+.animation{
+    opacity : 0 ;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 5s;
+}
+
+.animate{
+    opacity : 1;
+}
+
+.converter-form .form-logo {
+	text-align: center;
+	font-size: 40px;
+	margin-bottom: .5rem;
+	color: rgba(255, 255, 255, 0.5);
+}
+.converter-form .form-title {
+	text-align: center;
+	margin-bottom: 1.5rem;
+	font-weight: 300;
+	
+}
+
+.converter-form .btn-submit {
+	width: 100%;
+	font-size: 15px;
+	color: #fff;
+	background: #29CB9A;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	padding-top: .75rem;
+	padding-bottom: .75rem;
+	margin-top: .75rem;
+	margin-bottom: 1.5rem;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.converter-form .btn-submit:hover,
+.converter-form .btn-submit:focus,
+.converter-form .btn-submit:active { 
+	background: #00A372;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+a {
+    text-decoration: none !important ;
+}
+
+.bold-text {
+    font-weight: bold ;
+     
+}
