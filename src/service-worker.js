@@ -27,7 +27,10 @@ const static_urls = [
 
 
 self.addEventListener('install', e => {
-
+    if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
+        return;
+      }
+      
     e.waitUntil(
 
         caches.open(STATIC_CACHE).then(cache => {
@@ -54,7 +57,10 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', e => {
-
+    if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
+        return;
+      }
+    
 
     if (e.request.url.startsWith(CURRENCY_CONVERTER_URL)) {
         if (e.request.url.includes('countries')) {
