@@ -139,7 +139,7 @@ function processStaticAssetRequest(request) {
 
 
                         const clone = response.clone();
-                        static_cache.put(request, response);
+                        static_cache.put(request, clone);
                         resolve(response);
 
                     })
