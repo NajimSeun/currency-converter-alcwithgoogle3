@@ -27,9 +27,7 @@ const static_urls = [
 
 
 self.addEventListener('install', e => {
-    if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
-        return;
-      }
+     
       
     e.waitUntil(
 
