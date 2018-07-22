@@ -1,44 +1,61 @@
 import idb from "./idb-warpper";
 import TemplateEngine from "./template_engine"
-import Country from "./country";
+
 import ExchangeRate from "./exchange-rate";
+import { processCountries } from "./utility";
+
 
 const MAX_SELECTABLE = 13;
 
 class IndexController {
 
     constructor() {
-        
+
         this.registerServiceWorker();
         this.selectedCountries = new Map();
         this.from_currency = '';
         this.to_currency = '';
-        this.loadCountries().then(countries => {
-        
-       // const countries = this.processCountries(json.results);
-           /** idb.doesCountryDBExist().then(count => {
-                if (count !== countries.length) {
-                    idb.addAll_country(countries).then(last_key => console.log(last_key));
-                    this.registerServiceWorker() ;
-                }
-            })**/
+        this.loadCountries().then(response => {
 
-            this.converterConfiguration(countries);
+            // const countries = this.processCountries(json.results);
+            /** idb.doesCountryDBExist().then(count => {
+                 if (count !== countries.length) {
+                     idb.addAll_country(countries).then(last_key => console.log(last_key));
+                     this.registerServiceWorker() ;
+                 }
+             })**/
+            response.json().then(countries => {
+                console.log('in .json')
+                console.log(countries)
+                if (countries.results) {
+                    console.log('has results')
+                    const c = processCountries(countries.results);
+                    this.converterConfiguration(c);
+                    idb.addAll_country(c).then(key => {
+                        console.log(key)
+                    })
+                }
+                else {
+                    console.log(countries);
+                    this.converterConfiguration(countries);
+                }
+            })
+
 
 
 
         }).catch(e => console.log(e));
     }
 
-registerServiceWorker(){
-    if ('serviceWorker' in navigator){
-        navigator.serviceWorker.register('./sw.js'  ).then(registration => {
-            console.log(`service worker registered ${registration}`) ;
-        }).catch(e => {
-            console.log(e);
-        }) ;
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(registration => {
+                console.log(`service worker registered ${registration}`);
+            }).catch(e => {
+                console.log(e);
+            });
+        }
     }
-}
 
     converterConfiguration(countries) {
         this.selectedCountries.clear();
@@ -55,9 +72,7 @@ registerServiceWorker(){
         return this.get(this.getCurrencyConverterUrl('countries'));
     }
     get(url) {
-        return fetch(url, { mode: 'cors' }).then(response =>
-            response.json()
-        )
+        return fetch(url, { mode: 'cors' })
     }
     getCurrencyConverterUrl(task, query = null) {
         return ` ${query ? `https://free.currencyconverterapi.com/api/v5/${task}?q=${query}` :
@@ -67,7 +82,7 @@ registerServiceWorker(){
 
 
 
-    
+
 
     generateMarkup(template_name, data) {
         if (template_name == 'Config') {
@@ -241,10 +256,10 @@ registerServiceWorker(){
         const image = document.getElementById(image_id);
         console.log(`image ${flagUrl} ${image}`)
         image.src = flagUrl;
-        const rate_to = document.getElementById('rate_to') ;
+        const rate_to = document.getElementById('rate_to');
         const rate_from = document.getElementById('rate_from');
         rate_from.innerText = ' ';
-        rate_to.innerText = ' ' ;
+        rate_to.innerText = ' ';
     }
 
     addConvertClickListener() {
@@ -269,11 +284,13 @@ registerServiceWorker(){
                 const url = this.getCurrencyConverterUrl('convert', query);
                 this.get(url).then(response => {
                     console.log(response)
+                    response.json().then(er =>{
+                        const exchangeRate = new ExchangeRate(er);
+                    this.displayExchangeInfo(exchangeRate);
+                    this.displayValue(exchangeRate);
+                    })
+                     
 
-                    const exchangeRate = new ExchangeRate(response) ;
-                        this.displayExchangeInfo(exchangeRate);
-                        this.displayValue(exchangeRate);
-                    
 
                 })
             }
@@ -287,13 +304,13 @@ registerServiceWorker(){
 
         const rate_from = document.getElementById('rate_from');
         const rate_to = document.getElementById('rate_to');
-         
+
         rate_from.innerText = exchangeInfo_fr;
         rate_to.innerText = exchangeInfo_to;
     }
     displayValue(exchangeRate) {
-        
-        const  amount = document.getElementById('amount').value;
+
+        const amount = document.getElementById('amount').value;
         const value = exchangeRate.exchange(parseFloat(amount));
         const valueDisplay = document.getElementById('value');
         valueDisplay.innerText = `${exchangeRate.to} ${value.toFixed(3)}`;
@@ -305,7 +322,7 @@ registerServiceWorker(){
          })
      } **/
 
-     
+
 
     permuteSelections() {
         return new Promise((resolve, reject) => {
@@ -344,12 +361,12 @@ registerServiceWorker(){
 
             this.get(url).then(response => {
 
-                 console.log(response);
+                console.log(response);
             })
         })
 
     }
-    
-     
+
+
 }
 const ic = new IndexController();

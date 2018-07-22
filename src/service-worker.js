@@ -27,7 +27,7 @@ const static_urls = [
 
 
 self.addEventListener('install', e => {
-     
+     console.log('install')
       
     e.waitUntil(
 
@@ -39,7 +39,7 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', event => {
     const currentCaches = [STATIC_CACHE];
-
+     console.log('activate called');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
@@ -47,25 +47,25 @@ self.addEventListener('activate', event => {
             return Promise.all(cachesToDelete.map(cacheToDelete => {
                 return caches.delete(cacheToDelete);
             }));
-        }).then(() => {
-
-            self.clients.claim()
-        })
+        }).then( () => {
+            clients.claim()
+        }) 
     );
 });
 
 self.addEventListener('fetch', e => {
-    if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
-        return;
-      }
+     
     
-
+    console.log(e.request.url);
     if (e.request.url.startsWith(CURRENCY_CONVERTER_URL)) {
         if (e.request.url.includes('countries')) {
-
-
+            console.log(e.request);
+            console.log('about to process countries')
             e.respondWith(new Promise((resolve, reject) => {
                 processCountriesRequest(e.request).then(countries_json => {
+                    (createResponse(countries_json, e.request.url)).json(json => {
+                        console.log(json)
+                    })
                     resolve(createResponse(countries_json, e.request.url));
                 })
             }))
@@ -100,9 +100,13 @@ function processCountriesRequest(request) {
 
                 fetch(request).then(response => {
                     response.json().then(countries_json => {
+                        console.log(countries_json)
                         const countries = Utility.processCountries(countries_json.results);
                         idb.addAll_country(countries).then(last_key => {
-
+                            idb.getAllCountries().then(array => {
+                                console.log(array)
+                                resolve(array);
+                            }) 
 
                         })
 
@@ -110,15 +114,22 @@ function processCountriesRequest(request) {
                 }).catch(e => {
                     reject(e)
                 })
+            }else{
+                 idb.getAllCountries().then(array => {
+                console.log(array)
+                resolve(array);
+            })
             }
-            resolve(idb.getAllCountries());
+           
+            
         })
 
     })
 }
 
 function createResponse(json, url) {
-
+    console.log(json)
+    console.log(JSON.stringify(json))
     return new Response(JSON.stringify(json), {
         ok: true,
         status: 200,
