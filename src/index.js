@@ -5,7 +5,7 @@ import ExchangeRate from "./exchange-rate";
 import { processCountries } from "./utility";
 
 
-const MAX_SELECTABLE = 13;
+const MAX_SELECTABLE = 9;
 
 class IndexController {
 
