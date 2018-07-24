@@ -79,3 +79,7 @@ a {
     font-weight: bold ;
      
 }
+
+.col , .col-xs-12 {
+	padding-right:  0px !important ;
+}

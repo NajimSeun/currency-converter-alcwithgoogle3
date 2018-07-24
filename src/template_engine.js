@@ -128,25 +128,26 @@ class TemplateEngine {
              </div>
            </div>
            <div class="row">
-             <div   class="col ">
+           
+             <div   class="col col-xs-12 offset-xs-5">
                <img src="/img/white.png" width="50" height="50" id="from_img">
                </div>
-               <div   class="col ">
+               <div   class="col col-xs-12 offset-xs-5">
                <a href="#">
                  <span class="  theme-color" id="rate_from"></span>
                </a>
                </div>
-               <div   class="col ">
+               <div   class="col col-xs-12 offset-xs-5">
                <a href="#">
                  <i class="fa fa-exchange theme-color"></i>
                </a>
                </div>
-               <div   class="col">
-               <a href="#">
+               <div class="col col-xs-12 offset-xs-5">
+                 <a href="#">
                  <span class="  theme-color" id="rate_to"></span>
                </a>
                </div>
-               <div   class="col ">
+               <div   class="col col-xs-12 offset-xs-5">
                <img src="/img/white.png" width="50" height="50" id="to_img">
                </div>
 
